@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ration Card Application</title>
+
+
+<style>
+* { box-sizing: border-box; }
+
+
+body {
+    margin: 0;
+    padding: 15px;
+    background: #eee;
+    font-family: Arial, "Noto Sans Malayalam", sans-serif;
+}
+
+
+.toolbar {
+    text-align: center;
+    padding: 15px;
+}
+
+
+button {
+    padding: 12px 25px;
+    margin: 5px;
+    font-size: 17px;
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    color: white;
+    background: #1769aa;
+}
+
+
+.page {
+    background: white;
+    width: 210mm;
+    height: 297mm;
+    margin: auto;
+    padding: 12mm 18mm;
+    font-size: 16px;
+    line-height: 1.5;
+    color: black;
+    overflow: hidden;
+}
+
+
+p { margin: 9px 0; }
+
+
+input {
+    width: 75%;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    background: transparent;
+    font-family: Arial, "Noto Sans Malayalam", sans-serif;
+    font-size: 19px;
+    padding: 3px;
+    color: black;
+}
+
+
+.small { width: 45%; }
+
+
+@media screen {
+    .page {
+        box-shadow: 0 0 8px #999;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div class="toolbar">
+<button onclick="printApplication()">PRINT APPLICATION</button>
+<button onclick="clearForm()">CLEAR</button>
+</div>
+
+
+<div class="page" id="application">
+
+
+<p>
+To<br>
+The Taluk Supply Officer,<br>
+Civil Supplies Department, Kerala.
+</p>
+
+
+<p>
+<b>Subject: Request for Name Correction in Ration Card</b>
+</p>
+
+
+<p>സർ,</p>
+
+
+<p>
+എന്റെ റേഷൻ കാർഡിൽ ഉൾപ്പെട്ടിരിക്കുന്ന അംഗത്തിന്റെ പേര്
+തെറ്റായി രേഖപ്പെടുത്തിയിട്ടുണ്ട്. ആയതിനാൽ താഴെ പറയുന്ന
+വിവരങ്ങൾ പ്രകാരം പേര് തിരുത്തി നൽകണമെന്ന് അപേക്ഷിക്കുന്നു.
+</p>
+
+
+<p>
+നിലവിലുള്ള പേര് (മലയാളം):<br>
+<input type="text">
+</p>
+
+
+<p>
+നിലവിലുള്ള പേര് (English):<br>
+<input type="text">
+</p>
+
+
+<p>
+തിരുത്തേണ്ട ശരിയായ പേര് (മലയാളം):<br>
+<input type="text">
+</p>
+
+
+<p>
+തിരുത്തേണ്ട ശരിയായ പേര് (English):<br>
+<input type="text">
+</p>
+
+
+<p>
+റേഷൻ കാർഡ് നമ്പർ:<br>
+<input type="text">
+</p>
+
+
+<p>
+ആധാർ / SSLC രേഖ പ്രകാരം ശരിയായ പേര് റേഷൻ കാർഡിൽ
+തിരുത്തി നൽകണമെന്ന് വിനീതമായി അപേക്ഷിക്കുന്നു.
+</p>
+
+
+<br>
+
+
+<p>
+സ്ഥലം: <input class="small" type="text">
+</p>
+
+
+<p>
+തീയതി: <input class="small" type="text">
+</p>
+
+
+<br><br>
+
+
+<p>
+അപേക്ഷകന്റെ പേര്:<br>
+<input type="text">
+</p>
+
+
+<br><br>
+
+
+<p>
+ഒപ്പ്: __________________________
+</p>
+
+
+</div>
+
+
+<script>
+
+
+function printApplication() {
+
+
+    const page = document.getElementById("application");
+
+
+    const printWindow = window.open("", "_blank");
+
+
+    if (!printWindow) {
+        alert("Popup അനുവദിക്കുക. ശേഷം വീണ്ടും Print അമർത്തുക.");
+        return;
+    }
+
+
+    const styles = `
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 210mm;
+        height: 297mm;
+        font-family: Arial, "Noto Sans Malayalam", sans-serif;
+        color: black;
+    }
+
+
+    .page {
+        width: 210mm;
+        height: 297mm;
+        padding: 12mm 18mm;
+        overflow: hidden;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+
+    p { margin: 9px 0; }
+
+
+    input {
+        width: 75%;
+        border: none;
+        border-bottom: 1px solid black;
+        background: transparent;
+        font-family: Arial, "Noto Sans Malayalam", sans-serif;
+        font-size: 18px;
+        color: black;
+        padding: 3px;
+        outline: none;
+    }
+
+
+    input.small {
+        width: 45%;
+    }
+
+
+    `;
+
+
+    let content = page.innerHTML;
+
+
+    const inputs = page.querySelectorAll("input");
+    const printInputs = printWindow;
+
+
+    inputs.forEach((input, index) => {
+        const value = input.value
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+
+
+        content = content.replace(
+            /<input([^>]*)>/i,
+            '<span style="display:inline-block;min-width:45%;border-bottom:1px solid black;font-size:18px;padding:3px;">' + value + '</span>'
+        );
+    });
+
+
+    printWindow.document.open();
+
+
+    printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="ml">
+    <head>
+    <meta charset="UTF-8">
+    <title>Application</title>
+    <style>${styles}</style>
+    </head>
+    <body>
+    <div class="page">${content}</div>
+    <script>
+    window.onload = function() {
+        setTimeout(function() {
+            window.print();
+        }, 700);
+    };
+    <\/script>
+    </body>
+    </html>
+    `);
+
+
+    printWindow.document.close();
+}
+
+
+function clearForm() {
+    if (confirm("എല്ലാ വിവരങ്ങളും മായ്ക്കണോ?")) {
+        document.querySelectorAll("input").forEach(input => {
+            input.value = "";
+        });
+    }
+}
+
+
+</script>
+
+
+</body>
+</html>
+
